@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_celery_beat',
     'users.apps.UsersConfig',
+    'habit.apps.HabitConfig',
 ]
 
 MIDDLEWARE = [
@@ -127,8 +128,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru-ru'
 
-# TIME_ZONE = 'UTC'
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
+# TIME_ZONE = 'Europe/Moscow'
 
 
 USE_I18N = True
@@ -259,6 +260,7 @@ if CACHE_ENABLED:
 # Настройки для celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL-адрес брокера сообщений
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # URL-адрес брокера результатов
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -266,10 +268,16 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'  # Часовой пояс для работы Celery
 CELERY_TASK_TRACK_STARTED = True  # Флаг отслеживания выполнения задач
 CELERY_TASK_TIME_LIMIT = 30 * 60  # Максимальное время на выполнение задачи
+CELERY_IMPORTS = ('habit.tasks', )
 
-# CELERY_BEAT_SCHEDULE = {
-#     'task-name': {
-#         'task': '****.tasks.****',  # Путь к задаче
-#         'schedule': timedelta(minutes=5),  # Расписание выполнения задачи (например, каждые 10 минут)
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'habit.tasks.send_telegram_message',  # Путь к задаче
+        'schedule': timedelta(minutes=1),  # Расписание выполнения задачи (например, каждые 10 минут)
+    },
+}
+
+
+# Настройки для Телеграмм Бота
+TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+TG_CHAT_ID = os.getenv("TG_CHAT_ID")
