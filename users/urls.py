@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework.authtoken import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-from users.views import *
+from users.views import UserListAPIView, UserRetrieveAPIView, UserCreateAPIView, UserUpdateAPIView, Logout
 from users.apps import UsersConfig
 
 
@@ -11,7 +11,7 @@ app_name = UsersConfig.name
 
 urlpatterns = [
     path('', UserListAPIView.as_view(), name='user_list'),
-    path('detail/<int:pk>', UserRetrieveAPIView.as_view(), name='users_detail'),
+    path('detail/<int:pk>', UserRetrieveAPIView.as_view(), name='user_detail'),
     path('create', UserCreateAPIView.as_view(), name='user_create'),
     path('update/<int:pk>', UserUpdateAPIView.as_view(), name='user_update'),
 
