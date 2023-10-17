@@ -1,4 +1,5 @@
 # from django.test import TestCase
+from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 
@@ -37,6 +38,18 @@ class HabitTestCase(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         self.test_model_name = 'habit_for_test'
+
+        self.test_habit_data = {
+            "owner": self.user,
+            'name': 'habit_for_test',
+            "time": "10:10:00",
+            "place": "home",
+            "action": "do 10 push-ups",
+            "is_pleasurable": True,
+            "execution_time": "00:02",
+            "is_public": True
+        }
+        self.habit = Habit.objects.create(**self.test_habit_data)
 
     def test_habit_create(self):
         """
@@ -93,7 +106,7 @@ class HabitTestCase(APITestCase):
         response = self.client.get('/habits/')
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Habit.objects.all().count(), 2)
+        self.assertEqual(Habit.objects.all().count(), 3)
 
     def test_list_habits_public(self):
         """
@@ -103,7 +116,19 @@ class HabitTestCase(APITestCase):
         response = self.client.get('/public_habits')
         print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Habit.objects.all().count(), 2)
+        self.assertEqual(Habit.objects.all().count(), 3)
+
+    def test_habit_delete(self):
+        """
+        Метод тестирует удаление созданной привычки.
+        """
+        habit_id = self.habit.pk
+        response = self.client.delete(
+            reverse('habit:habits-detail', args=[habit_id])
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Habit.objects.filter(pk=habit_id).exists(), False)
 
 
 class SuperuserTestCase(APITestCase):
