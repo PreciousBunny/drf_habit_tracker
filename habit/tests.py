@@ -33,8 +33,7 @@ class HabitTestCase(APITestCase):
 
         # Получаем токен авторизации
         response = self.client.post('/users/token/',
-                                    {'email': 'testuser@example.com',
-                                     'password': 'testpassword'})
+                                    {'email': 'testuser@example.com', 'password': 'testpassword'})
         self.access_token = response.json().get('access')
         self.client.credentials(
             HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
@@ -130,14 +129,14 @@ class SuperuserTestCase(APITestCase):
 
         # Получаем токен авторизации
         response = self.client.post('/users/token/',
-                                    {"email": "testadmin@example.com",
-                                     "password": "testpassword"})
+                                    {"email": "testadmin@example.com", "password": "testpassword"})
         self.access_token = response.json().get('access')
         self.client.credentials(
             HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
 
     def test_users_get(self):
         """
-        Метод тестирует вывод/отображение созданного superuser."""
+        Метод тестирует вывод/отображение созданного superuser.
+        """
         response = self.client.get('/users/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)

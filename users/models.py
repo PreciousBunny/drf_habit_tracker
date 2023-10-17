@@ -26,8 +26,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("The given username must be set")
         email = self.normalize_email(email)
-        GlobalUserModel = apps.get_model(self.model._meta.app_label,
-                                         self.model._meta.object_name)
+        GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
         email = GlobalUserModel.normalize_username(email)
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
@@ -65,15 +64,13 @@ class User(AbstractUser):
     """
     username = None
     email = models.EmailField(unique=True, verbose_name='Электронная почта')
-    avatar = models.ImageField(upload_to='user/', verbose_name='Аватар',
-                               **NULLABLE)
+    avatar = models.ImageField(upload_to='user/', verbose_name='Аватар', **NULLABLE)
     phone = models.CharField(max_length=50, verbose_name='Телефон', **NULLABLE)
     city = models.CharField(max_length=150, verbose_name='Город', **NULLABLE)
     is_active = models.BooleanField(default=True, verbose_name='Активный')
     role = models.CharField(max_length=15, choices=UserRoles.choices,
                             verbose_name='Роль', default=UserRoles.MEMBER)
-    chat_id = models.CharField(max_length=15, verbose_name='ID бота TG',
-                               **NULLABLE)
+    chat_id = models.CharField(max_length=15, verbose_name='ID бота TG', **NULLABLE)
 
     # Переопределение настроек для авторизации и регистрации через модель
     USERNAME_FIELD = "email"

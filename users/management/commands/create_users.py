@@ -15,8 +15,7 @@ class Command(BaseCommand):
         Команда для сброса и создания вариаций тестовых пользователей.
         """
 
-        print("Привет! Начинаю заполнять БД вариациями тестовых пользователей "
-              "- Wait few minutes!")
+        print("Привет! Начинаю заполнять БД вариациями тестовых пользователей - Wait few minutes!")
 
         User.objects.all().delete()
         Habit.objects.all().delete()

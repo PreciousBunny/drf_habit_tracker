@@ -25,8 +25,7 @@ class HabitViewSet(viewsets.ModelViewSet):
         владельцам - только созданные им привычки.
         """
         user = self.request.user
-        if user.is_staff or user.is_superuser \
-                or user.role == UserRoles.MODERATOR:
+        if user.is_staff or user.is_superuser or user.role == UserRoles.MODERATOR:
             return Habit.objects.all()
         else:
             return Habit.objects.filter(owner=user)

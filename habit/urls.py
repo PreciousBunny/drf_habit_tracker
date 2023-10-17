@@ -11,6 +11,6 @@ router.register(r'habits', HabitViewSet, basename='habits')
 
 
 urlpatterns = [
-    path('public_habits', HabitsListAPIView.as_view(), name='public_habits'),
+    path('public_habits', HabitsListAPIView.as_view(), name='public_habits_list'),
     path('', include(router.urls)),
-              ]
+]
