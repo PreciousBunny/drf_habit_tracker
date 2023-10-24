@@ -2,9 +2,10 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import User
-from users.serializers import UserSerializer, ForCreateUserSerializer
+from users.serializers import UserSerializer, ForCreateUserSerializer, MyTokenObtainPairSerializer
 
 
 # Create your views here.
@@ -46,3 +47,7 @@ class Logout(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
