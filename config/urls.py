@@ -38,7 +38,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),  # проверка работы rest framework, авторизация по сессии
+    # path('api-auth/', include('rest_framework.urls')),  # проверка работы rest framework, авторизация по сессии
     path('users/', include('users.urls', namespace='users')),
     path('', include('habit.urls', namespace='habit')),
 
