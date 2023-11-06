@@ -26,11 +26,11 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-hh2bd+-pekg7j@ewz+^@p6b21j75$u523@lez$%&aczngsqe-j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = bool(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = ['127.0.0.1']
-
+ALLOWED_HOSTS = [os.getenv("ALLOWED_HOST"), "localhost", "127.0.0.1"]
+# ALLOWED_HOSTS = [ ]
 
 # Application definition
 
@@ -160,9 +160,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'staticfiles/'
 # STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 # STATICFILES_DIRS = (BASE_DIR / 'static',)
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 # Пути для загрузки данных от пользователей
@@ -275,10 +276,14 @@ if CACHE_ENABLED:
     }
 
 
-
 # Настройки для celery
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL-адрес брокера сообщений
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # URL-адрес брокера результатов
+
+REDIS_PORT = '6379'
+REDIS_HOST = 'redis'
+
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'  # URL-адрес брокера сообщений
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'  # URL-адрес брокера результатов
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_ACCEPT_CONTENT = ['application/json']
