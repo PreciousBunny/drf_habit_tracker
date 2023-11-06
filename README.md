@@ -90,6 +90,10 @@ celery -A config worker -l INFO
 ```bash
 celery -A config beat -l info
 ```
+18) Собрать и запустить образ docker-compose
+```bash
+docker-compose up --build
+```
 
 ## Тестирование
 * Для запуска тестов:
