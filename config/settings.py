@@ -113,9 +113,9 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         # 'ENGINE': 'django.db.backends.postgresql',
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        'HOST': 'localhost',
+        'HOST': os.getenv('HOST_POSTGRES'),
         'NAME': os.getenv('NAME_POSTGRES'),
-        'PORT': 5432,
+        'PORT': os.getenv('PORT_POSTGRES'),
         'USER': os.getenv('USER_POSTGRES'),
         'PASSWORD': os.getenv('PASSWORD_POSTGRES'),
     }
